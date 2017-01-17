@@ -1,0 +1,1 @@
+PYTHONPATH=. python3 word2vec/train.py

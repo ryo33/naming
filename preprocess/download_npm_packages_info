@@ -1,0 +1,2 @@
+rm -f data/raw.json
+curl https://registry.npmjs.org/-/all > data/raw.json
