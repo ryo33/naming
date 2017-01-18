@@ -1,22 +1,21 @@
 import json
+from functools import reduce
 
-from configs.constants import DATA_PATH, EOS
+from configs.constants import DATA_PATH, OUTPUT_VOCAB_PATH, EOS, INPUT_SEQUENCE_LENGTH
 from utils.utils import tokenize
 
 def get_pairs():
-    with open(DATA_PATH) as f:
+    with open(DATA_PATH, mode='r') as f:
         return json.load(f)
 
-def prepare_training(w2v):
-    pairs = get_pairs()
-    words = list(set(reduce(lambda acc, pair: acc.extend(pair[0]), pairs, [])))
-    words.sort()
-    index_to_word = dict(enumerate(words))
-    word_to_index = {v: k for k, v in my_map.items()}
+
+def prepare_training(pairs, w2v, vocab):
     def mapper(pair):
-        name = map(lambda word: word_to_index(word), pair[0])
-        description = map(lambda word: w2v[word], tokenize(pair[1]))
-        description.append(EOS)
-        return (name, descriptions)
+        name = map(lambda word: vocab.from_word(word), pair[0])
+        name.append(vocab.from_word(EOS))
+        description = encode_input(pair[1], w2v)
+        return (name, description)
     pairs = map(mapper, pairs)
-    return pairs, index_to_word, word_to_index
+    # ignore long descriptions
+    pairs = filter(lambda pair: len(pair[1]) <= INPUT_SEQUENCE_LENGTH and len(pair[0]) <= ANSWER_MAX_TOKEN_LENGTH, pairs)
+    return pairs

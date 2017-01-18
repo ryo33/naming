@@ -1,8 +1,11 @@
-from word2vec.model import train_model, save_model
+import logging
+from word2vec.model import train_w2v_model, save_w2v_model
 
 def train():
-    model = train_model()
-    save_model(model)
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+
+    model = train_w2v_model()
+    save_w2v_model(model)
 
 if __name__ == "__main__":
     train()
