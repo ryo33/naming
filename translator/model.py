@@ -8,10 +8,11 @@ import numpy as np
 from word2vec.model import load_w2v_model
 from utils.utils import tokenize
 from configs.constants import (
-        TRANSLATOR_MODEL_PATH, OUTPUT_VOCAB_PATH, EOS,
+        TRANSLATOR_MODEL_PATH, OUTPUT_VOCAB_PATH, UNK, EOS,
         TEST_FREQUENCY, INPUT_SEQUENCE_LENGTH,
         TOKEN_SIZE, TRAIN_BATCH_SIZE, ANSWER_MAX_TOKEN_LENGTH,
-        HIDDEN_DIM, INPUT_LAYER_DEPTH, OUTPUT_LAYER_DEPTH)
+        HIDDEN_DIM, INPUT_LAYER_DEPTH, OUTPUT_LAYER_DEPTH,
+        OUTPUT_MAX_VOCAB_SIZE)
 
 logger = logging.getLogger(__name__)
 
@@ -75,10 +76,10 @@ class OutputVocab():
             json.dump(self.words, f)
 
     def from_index(self, index):
-        self.index_to_word[index]
+        return self.index_to_word[index]
 
     def from_word(self, word):
-        self.word_to_index[word]
+        return self.word_to_index.get(word, self.word_to_index[UNK])
 
 
 def load_vocab():
@@ -87,11 +88,13 @@ def load_vocab():
 
 
 def get_vocab(pairs):
-    words = set()
+    words = dict()
     for name, description in pairs:
         for word in name:
-            words.add(word)
-    words = list(words)
-    words.sort()
+            words[word] = words.get(word, 0) + 1
+    words = sorted(words.items(), key=lambda word: word[1], reverse=True)
+    words = words[:OUTPUT_MAX_VOCAB_SIZE-2]
+    words = list(map(lambda word: word[0], words))
+    words.append(UNK)
     words.append(EOS)
     return OutputVocab(words)

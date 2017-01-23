@@ -1,6 +1,7 @@
 import os
 
-EOS = '$$EOS'
+EOS = '$$EOS$$'
+UNK = '__UNK__'
 
 DATA_PATH = 'data/filtered.json'
 DESCRIPTIONS_PATH = 'data/descriptions'
@@ -8,6 +9,8 @@ OUTPUT_VOCAB_PATH = 'data/out_vocab.json'
 
 WORD2VEC_MODEL_PATH = 'models/word2vec'
 TRANSLATOR_MODEL_PATH = 'models/translator'
+
+OUTPUT_MAX_VOCAB_SIZE = 20000
 
 TOKEN_SIZE = 128
 INPUT_SEQUENCE_LENGTH = 32
