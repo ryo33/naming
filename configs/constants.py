@@ -9,6 +9,7 @@ OUTPUT_VOCAB_PATH = 'data/out_vocab.json'
 
 WORD2VEC_MODEL_PATH = 'models/word2vec'
 TRANSLATOR_MODEL_PATH = 'models/translator'
+TRANSLATOR_WEIGHTS_PATH = 'models/translator_weights'
 
 OUTPUT_MAX_VOCAB_SIZE = 20000
 

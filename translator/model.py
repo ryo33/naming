@@ -8,7 +8,8 @@ import numpy as np
 from word2vec.model import load_w2v_model
 from utils.utils import tokenize
 from configs.constants import (
-        TRANSLATOR_MODEL_PATH, OUTPUT_VOCAB_PATH, UNK, EOS,
+        TRANSLATOR_MODEL_PATH, TRANSLATOR_WEIGHTS_PATH,
+        OUTPUT_VOCAB_PATH, UNK, EOS,
         TEST_FREQUENCY, INPUT_SEQUENCE_LENGTH,
         TOKEN_SIZE, TRAIN_BATCH_SIZE, ANSWER_MAX_TOKEN_LENGTH,
         HIDDEN_DIM, INPUT_LAYER_DEPTH, OUTPUT_LAYER_DEPTH,
@@ -41,7 +42,6 @@ def train_s2s_model(model, pairs, test_pairs, w2v, vocab):
             for (name, description) in test_pairs:
                 prediction = translate(description, s2s, w2v, vocab)
                 logger.info('[%s](%s) -> [%s]' % (description, name, prediction))
-            save_s2s_model(model)
 
 
 def get_s2s_model(vocab_size):
@@ -60,8 +60,16 @@ def save_s2s_model(model):
     model.save(TRANSLATOR_MODEL_PATH)
 
 
+def save_s2s_weights(model):
+    model.save_weights(TRANSLATOR_WEIGHTS_PATH)
+
+
 def load_s2s_model():
     return load_model(TRANSLATOR_MODEL_PATH)
+
+
+def load_s2s_weights(model):
+    model.load_weights(TRANSLATOR_WEIGHTS_PATH)
 
 
 class OutputVocab():
