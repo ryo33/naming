@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const DESCRIPTION_FILE = 'data/descriptions'
+const DESCRIPTION_FILE = 'data/descriptions.dat'
 const FILTERED_FILE = 'data/filtered.json'
 
 fs.readFile('data/raw.json', 'utf8', (err, data) => {
