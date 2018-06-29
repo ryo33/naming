@@ -1,6 +1,1 @@
-## Preprocess
-
-```bash
-bash preprocess/download_npm_packages_info
-node preprocess/filter.js
-```
+# MOVED TO [GITLAB](https://github.com/ryo33/naming)
